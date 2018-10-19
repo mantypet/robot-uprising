@@ -3,7 +3,9 @@ from ev3dev2.button import Button
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
 from ev3dev2.sensor.lego import TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor
 from ev3dev2.display import Display
+from ev3dev2.sound import Sound
 
+from time import sleep
 
 class Debugger:
 
@@ -17,17 +19,16 @@ class Debugger:
         button = Button()
         screen = Display()
 
-        ultra = UltrasonicSensor(self.in1)
+       #ultra = UltrasonicSensor(self.in1)
         infra = InfraredSensor(self.in2)
         touch = TouchSensor(self.in3)
         color = ColorSensor(self.in4)
 
         self.mode = 1
         self.max = 5
-        button.on_right = self.change_mode
         while not button.backspace:
-            if self.mode == 1:
-                print("U,Distance: %d" % ultra.distance_centimeters)
+            #if self.mode == 1:
+             #   print("U,Distance: %d" % ultra.distance_centimeters)
             if self.mode == 2:
                 print("I,Proximity: %d" % infra.proximity)
             if self.mode == 3:
@@ -36,8 +37,14 @@ class Debugger:
                 print("C,Reflected light: %d" % color.reflected_light_intensity)
             if self.mode == 5:
                 print("C,Ambient light: %d" % color.ambient_light_intensity)
+            if button.right:
+                self.change_mode()
+                
 
-    def change_mode(self, status):
+    def change_mode(self):
+        Sound().beep()
+
         self.mode = self.mode + 1
         if self.mode > self.max:
             self.mode = 1
+        sleep(5)
