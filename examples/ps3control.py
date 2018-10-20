@@ -6,7 +6,7 @@ __author__ = 'Anton Vanhoucke'
 # safely ignored if one just needs to run API tests on Windows.
 import evdev
 
-from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MoveSteering
+from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, SpeedPercent, MoveTank, MoveSteering
 from ev3dev2.sound import Sound
 
 import threading
@@ -44,11 +44,13 @@ sound.speak("Ready")
 
 speedL = 0
 speedR = 0
+close_jaw = True
 running = True
 
 class MotorThread(threading.Thread):
     def __init__(self):
         self.tank = MoveTank(OUTPUT_B, OUTPUT_C)
+        self.claw = LargeMotor(OUTPUT_D)
         threading.Thread.__init__(self)
 
     def run(self):
@@ -58,6 +60,13 @@ class MotorThread(threading.Thread):
                 self.tank.on(-speedL, -speedR)
             else:
                 self.tank.off()
+            if close_jaw and not self.claw.is_overloaded:
+                self.claw.on(30)
+            elif not close_jaw and not self.claw.is_overloaded:
+                self.claw.on(-30)
+            else:
+                self.claw.off()
+            
 
         self.tank.off()
 
@@ -67,9 +76,9 @@ motor_thread.start()
 
 
 for event in gamepad.read_loop():   #this loops infinitely
-    if event.type != 0:
-        print("%s %s %s" % (event.type, event.code, event.value))
-
+    if event.type == 2 or event.type == 1 or event.type == 0:
+        if event.value != 0:
+            print("%s %s %s" % (event.type, event.code, event.value))
     if event.type == 3:             #A stick is moved
         # 5: R2
         # 2: L2
@@ -78,12 +87,20 @@ for event in gamepad.read_loop():   #this loops infinitely
         #3: R-stick X-axis
         #4: R-stick Y-axis
 
+        #304: X-button
+        #305: O-button
+        #307: Triangle
+        #308: square
+        #310: L1
+        #311: R1
+        #314: Select
+        #315: start
+
         if event.code == 1:         #Y axis on right stick
             speedL = scale_stick(event.value)
         if event.code == 4:
             speedR = scale_stick(event.value)
-
-    if event.type == 1 and event.code == 302 and event.value == 1:
-        print("X button is pressed. Stopping.")
-        running = False
-        break
+    if event.type == 1 and event.code == 304 and event.value == 1:
+        close_jaw = True
+    if event.type == 1 and event.code == 305 and event.value == 1:
+        close_jaw = False
