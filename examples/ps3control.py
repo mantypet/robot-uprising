@@ -13,6 +13,8 @@ import threading
 import math
 
 ## Some helpers ##
+
+
 def scale(val, src, dst):
     """
     Scale the given value from the scale of src to the scale of dst.
@@ -25,8 +27,10 @@ def scale(val, src, dst):
     """
     return (float(val - src[0]) / (src[1] - src[0])) * (dst[1] - dst[0]) + dst[0]
 
+
 def scale_stick(value):
-    return scale(value,(0,255),(-100,100))
+    return scale(value, (0, 255), (-100, 100))
+
 
 ## Initializing ##
 sound = Sound()
@@ -45,58 +49,75 @@ sound.speak("Ready")
 speedL = 0
 speedR = 0
 close_jaw = True
+closed = False
 running = True
+
 
 class MotorThread(threading.Thread):
     def __init__(self):
         self.tank = MoveTank(OUTPUT_B, OUTPUT_C)
-        self.claw = LargeMotor(OUTPUT_D)
         threading.Thread.__init__(self)
 
     def run(self):
-        print("Engine running!")
         while running:
             if speedL != 0 or speedR != 0:
                 self.tank.on(-speedL, -speedR)
             else:
                 self.tank.off()
-            if close_jaw and not self.claw.is_overloaded:
-                self.claw.on(30)
-            elif not close_jaw and not self.claw.is_overloaded:
-                self.claw.on(-30)
-            else:
-                self.claw.off()
-            
 
         self.tank.off()
+
+class ClawThread(threading.Thread):
+    def __init__(self):
+        self.claw = LargeMotor(OUTPUT_D)
+        threading.Thread.__init__(self)
+
+    def run(self):
+        closed = False
+
+        while running:
+            if close_jaw and not self.claw.is_overloaded and not closed:
+                closed = True
+                self.claw.on_for_degrees(30, 3 * 360)
+            elif not close_jaw and not self.claw.is_overloaded and closed:
+                closed = False
+                self.claw.on_for_degrees(-30, 2*360)
+            else:
+                self.claw.off()
+
+        self.claw.off()
+
 
 motor_thread = MotorThread()
 motor_thread.setDaemon(True)
 motor_thread.start()
+claw_thread = ClawThread()
+claw_thread.setDaemon(True)
+claw_thread.start()
 
 
-for event in gamepad.read_loop():   #this loops infinitely
+for event in gamepad.read_loop():  # this loops infinitely
     if event.type == 2 or event.type == 1 or event.type == 0:
         if event.value != 0:
             print("%s %s %s" % (event.type, event.code, event.value))
-    if event.type == 3:             #A stick is moved
+    if event.type == 3:  # A stick is moved
         # 5: R2
         # 2: L2
-        #0: L-stick X-axis
-        #1: L-stick Y-axis
-        #3: R-stick X-axis
-        #4: R-stick Y-axis
+        # 0: L-stick X-axis
+        # 1: L-stick Y-axis
+        # 3: R-stick X-axis
+        # 4: R-stick Y-axis
 
-        #304: X-button
-        #305: O-button
-        #307: Triangle
-        #308: square
-        #310: L1
-        #311: R1
-        #314: Select
-        #315: start
+        # 304: X-button
+        # 305: O-button
+        # 307: Triangle
+        # 308: square
+        # 310: L1
+        # 311: R1
+        # 314: Select
+        # 315: start
 
-        if event.code == 1:         #Y axis on right stick
+        if event.code == 1:  # Y axis on right stick
             speedL = scale_stick(event.value)
         if event.code == 4:
             speedR = scale_stick(event.value)
