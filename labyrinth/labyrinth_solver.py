@@ -1,4 +1,4 @@
-from graph import *
+from labyrinth.graph import *
 import math
 import operator
 
