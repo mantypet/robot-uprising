@@ -49,7 +49,7 @@ class Dijkstra:
         #return self.shortest_path(self.goal)
         return self.backto2d(self.shortest_path(self.goal))
 
-    def backto2d(items):
+    def backto2d(self, items):
         coordinates = []
         index = 0
         size = len(items)

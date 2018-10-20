@@ -1,4 +1,4 @@
-from labyrinth-solver import *
+from labyrinth_solver import *
 from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MoveSteering
 from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
@@ -59,7 +59,7 @@ prevcol = coordinates[0][1]
 currow = coordinates[1][0]
 curcol = coordinates[1][0]
 
-tank = CustomMoveTank()
+tank = CustomMoveTank(OUTPUT_B, OUTPUT_C)
 
 heading = 1 # 0 = north, 1 = east, 2 = south, 3 = west
 index = 2
