@@ -46,7 +46,29 @@ class Dijkstra:
             self.s.append(shortest)
             for neigh in self.map.getvalue(shortest):
                 self.relax(shortest, neigh)
-        self.shortest_path(self.goal)
+        #return self.shortest_path(self.goal)
+        return self.backto2d(self.shortest_path(self.goal))
+
+    def backto2d(items):
+        coordinates = []
+        index = 0
+        size = len(items)
+        for i in range(size):
+            innertable = []
+            coordinates.append(innertable)
+        while len(items) != 0:
+            u = items.pop()
+            row = math.floor(u/6)
+            col = u % 6
+            print("row: " + str(row))
+            print("rcol: " + str(col))
+            templist = []
+            templist.append(row)
+            templist.append(col)
+            coordinates[index]=templist
+            index += 1
+        return(coordinates)
+
 
     def shortest_path(self, goal):
         u = self.path[goal]
@@ -56,7 +78,11 @@ class Dijkstra:
             items.append(u)
             u = self.path[u]
         items.append(self.start)
+
+        return items
+        '''
         while len(items) != 0:
             u = items.pop()
             print(u)
+        '''
             
