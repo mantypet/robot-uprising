@@ -21,3 +21,16 @@ class CustomMoveTank(MoveTank):
         self.right_motor.on_for_rotations(-speed, rotations, block=True)
         self.left_motor.on_for_degrees(speed, degrees=degrees, block=False)
         self.right_motor.on_for_degrees(-speed, degrees=degrees, block=False)
+
+    def move_cm(self, centimeters):
+        degrees = centimeters * 108
+
+        rotations = (degrees - degrees % 360) / 360
+        degrees = degrees - rotations * 360
+        speed = -60
+
+        # Set all parameters
+        self.left_motor.on_for_rotations(speed, rotations, block=False)
+        self.right_motor.on_for_rotations(speed, rotations, block=True)
+        self.left_motor.on_for_degrees(speed, degrees=degrees, block=False)
+        self.right_motor.on_for_degrees(speed, degrees=degrees, block=False)
