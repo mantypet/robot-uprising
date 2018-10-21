@@ -44,7 +44,8 @@ while True:
     
     if (intensity <= ridColor): #Ei viivalla -> alusta viivanhakumuuttujat
         speed = -speed
-        
+    
+    counter_max = 0
     i = 0
     while (intensity <= ridColor and i < counter_max): # Ei viivalla -> 
         intensity = colorS.reflected_light_intensity
