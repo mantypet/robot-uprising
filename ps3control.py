@@ -79,7 +79,7 @@ class ClawThread(threading.Thread):
         while running:
             if close_jaw and not self.claw.is_overloaded and not closed:
                 closed = True
-                self.claw.on_for_degrees(30, 3 * 360)
+                self.claw.on_for_degrees(30, 5 * 360)
             elif not close_jaw and not self.claw.is_overloaded and closed:
                 closed = False
                 self.claw.on_for_degrees(-30, 2*360)
@@ -96,6 +96,8 @@ claw_thread = ClawThread()
 claw_thread.setDaemon(True)
 claw_thread.start()
 
+duck = MediumMotor(OUTPUT_A)
+duck.on(20)
 
 for event in gamepad.read_loop():  # this loops infinitely
     if event.type == 2 or event.type == 1 or event.type == 0:
