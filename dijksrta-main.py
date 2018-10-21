@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+
+# Program that runs a Dijkstra on a graph representation of the labyrinth.
+# Two Goals for the algorithm are used
+# - One: from entrance to yellow button
+# - Two: from yellow button to exit
+# Solution was abandoned after teseting due to time limitations for fixing
+
 from labyrinth.labyrinth_solver import *
 from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, SpeedPercent, MoveTank, MoveSteering
 from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
@@ -11,6 +18,7 @@ from ev3dev2.sound import Sound
 from tank.custom_tank import CustomMoveTank
 
 # class DijkstraMain():
+
 
 def drive(currow, curcol, prevrow, prevcol, index):
     global heading
@@ -50,6 +58,7 @@ def drive(currow, curcol, prevrow, prevcol, index):
             heading = (heading - 1) % 4
         # liiku eteenpain
         tank.move_cm(30)
+
 
 start = 34
 goal = 21

@@ -1,3 +1,6 @@
+# Custom MoveTank extension for driving degrees and centimeters, calibrated
+# for our robot
+
 from ev3dev2.motor import MoveTank
 
 
@@ -38,4 +41,5 @@ class CustomMoveTank(MoveTank):
             self.right_motor.on_for_rotations(speed, rotations, block=True)
         if degrees != 0:
             self.left_motor.on_for_degrees(speed, degrees=degrees, block=False)
-            self.right_motor.on_for_degrees(speed, degrees=degrees, block=False)
+            self.right_motor.on_for_degrees(
+                speed, degrees=degrees, block=False)

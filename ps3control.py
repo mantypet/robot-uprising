@@ -67,6 +67,7 @@ class MotorThread(threading.Thread):
 
         self.tank.off()
 
+
 class ClawThread(threading.Thread):
     def __init__(self):
         self.claw = LargeMotor(OUTPUT_D)

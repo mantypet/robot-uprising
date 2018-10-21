@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+
+# Program for a motor test
+
 import ev3dev2.auto as ev3
 import time
 

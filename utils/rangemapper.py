@@ -1,3 +1,9 @@
+
+# This algorithm was written for solving metal rod
+# forest. It was abandoned as the robot was too big to rotate in the forest.
+# Possible fix for this was to make the infrared sensor rotate instead.
+# Unfortunately due to time constraints the code was not modified.
+
 from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, SpeedPercent, MoveTank, MoveSteering
 from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
@@ -22,14 +28,14 @@ class Reading:
 
 class RangeMapper:
 
-    # sensor location determines turn radius in cm
+    # sensor location determines turn radius of the sensor location in cm
     # thresehold determines how large space is required for a heading to be allowed
     def __init__(self, sensor_turn_radius=14, space_threshold=22):
         self.sensor_turn_radius = sensor_turn_radius
 
     def measure(self):
         infra = InfraredSensor(INPUT_2)
-        
+
         tank = CustomMoveTank(OUTPUT_B, OUTPUT_C)
 
         readings = []
@@ -49,7 +55,7 @@ class RangeMapper:
 
     def findGap(self):
         readings = self.measure()
-        
+
         largest_gap_reading = None
         largest_gap = 0.0
 
