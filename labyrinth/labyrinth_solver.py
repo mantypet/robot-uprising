@@ -7,69 +7,71 @@ import operator
 class Dijkstra:
     def __init__(self, start, goal):
         self.map = Graph()
-        self.distance = [] # indeksin solmun etaisyys lahtoon
-        self.path = [] # indeksin solmua edeltävä solmu toistaiseksi lyhimmällä polulla
-        self.s = []
-        self.start = start
-        self.goal = goal
-        for i in range(36):
+        self.distance = []  # distance of index node to start
+        self.path = []      # shortest path for node before index node
+        self.s = []         # visited nodes
+        self.start = start  # start node
+        self.goal = goal    # goal node
+        for i in range(36): # initialize all distances
             self.distance.append(1000)
             self.path.append(-1)
-        self.distance[start] = 0
+        self.distance[start] = 0 # distance to start is zero
 
-    def heuristic(self, start, goal):
-        startx = math.floor(start / 6)
-        starty = start% 6
+    def heuristic(self, start, goal):   # manhattan distance
+        startx = math.floor(start / 6)  # 1 dimensional coordinate to 2d row coordinate
+        starty = start% 6               # 1 dimensional coordinate to 2d column coordinate
         goalx = math.floor(goal / 6)
         goaly = goal % 6
 
-        distx = abs(startx-goalx)
-        disty = abs(starty - goaly)
+        distx = abs(startx-goalx)       # distance between rows
+        disty = abs(starty - goaly)     # distance between colmuns
 
-        return distx+disty
+        return distx + disty
 
 
     def relax(self, u, v):
-        if self.distance[v] > self.distance[u] + self.heuristic(u, v):
-            self.distance[v] = self.distance[u] + self.heuristic(u, v)
+        if self.distance[v] > self.distance[u] + self.heuristic(u, v): # update distance for next node v 
+            self.distance[v] = self.distance[u] + self.heuristic(u, v) # if found better path
             self.path[v] = u
 
     def dij(self):
-        keys = list(self.map.getgraph().keys())
-        while(len(self.s) != len(keys)):
-            left = []
-            for member in keys:
-                if member not in self.s:
+        keys = list(self.map.getgraph().keys()) # all nodes you can reach
+        while(len(self.s) != len(keys)):        # while there are unvisited nodes
+            left = []                           # nodes not visited
+            for member in keys:                 # from all nodes
+                if member not in self.s:        # choose those not visited
                     left.append(member)
-            shortest = left[0]
-            for node in left:
-                if self.distance[node] < self.distance[shortest]:
+            shortest = left[0]                  # initial value for shortest
+            for node in left:                   # compare all nodes and...
+                if self.distance[node] < self.distance[shortest]: # ...find shortest
                     shortest = node
-            self.s.append(shortest)
-            for neigh in self.map.getvalue(shortest):
+            self.s.append(shortest)             # add shortest distance node to visited
+            for neigh in self.map.getvalue(shortest): # update distances for neighbours of shortest distance node
                 self.relax(shortest, neigh)
+        # return in 2 dimensional coordinates shortest path for asked goal from start
         return self.backto2d(self.shortest_path(self.goal))
 
-    def backto2d(self, items):
-        coordinates = []
+    def backto2d(self, items): # change 1 dimensional coordinates to 2d coordinates for pathlist
+        coordinates = [] # 2d table
         index = 0
         size = len(items)
-        for i in range(size):
+        for i in range(size): # initialize 2d table to empty tables
             innertable = []
             coordinates.append(innertable)
-        while len(items) != 0:
+        while len(items) != 0: # add nodes in path to 2d table
             u = items.pop()
-            row = math.floor(u/6)
-            col = u % 6
+            row = math.floor(u/6)   # count 2d row
+            col = u % 6             # count 2d column
             templist = []
             templist.append(row)
             templist.append(col)
-            coordinates[index]=templist
+            coordinates[index]=templist # add coordinates to 2d table, coordinates[i] tells i-th node in path
             index += 1
+        # return 2d table with coordinates
         return(coordinates)
 
 
-    def shortest_path(self, goal):
+    def shortest_path(self, goal): # reverse path from goal to start
         u = self.path[goal]
         items = []
         items.append(goal)
