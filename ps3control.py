@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-__author__ = 'Anton Vanhoucke'zzz
+__author__ = 'Anton Vanhoucke'
 
 # This is a linux-specific module.
 # It is required by the Button class, but failure to import it may be
