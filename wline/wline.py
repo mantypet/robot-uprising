@@ -13,8 +13,12 @@ from ev3dev2.sound import Sound
 # valkoinen mitattu 70, harmaa mitattu 12, keskiarvo ^40
 
 # taustavari
-ridColor = 40
+ridColor = 20 # maalarinteippi
+#ridColor = 40 # valkoinen paperi
 
+
+# Nopeus
+speed = 25
 
 button = Button()
 colorS = ColorSensor(INPUT_3)
@@ -28,12 +32,24 @@ tank_pair.off()
 
 sound.beep()
 
+# Suoritussilmukka
 while True:
     intensity = colorS.reflected_light_intensity
 
-    if (intensity > ridColor):  # viivalla
-        tank_pair.on(50, 50)  # vasemman ja oikean nopeudet, ajaa eteenpäin
+    while (intensity > ridColor):  # viivalla
+        intensity = colorS.reflected_light_intensity
+        tank_pair.on(50, 50)  # Eteenpäin
+        counter_max = 5 # alustetaan viivanhaun sektorin leveys
+    
+    
+    if (intensity <= ridColor): #Ei viivalla -> alusta viivanhakumuuttujat
+        speed = -speed
+        
 
-    else:
-        tank_pair.on_for_seconds(-25, 25, 2, brake = True, block = False) # vasemman ja oikean nopeudet, kääntyy vasemmalle
-        tank_pair.on_for_seconds(25, -25, 2, brake = True, block = False)  # vasemman ja oikean nopeudet, kääntyy oikealle
+    while (intensity <= ridColor and i < counter_max): # Ei viivalla -> 
+        intensity = colorS.reflected_light_intensity
+        tank_pair.on(speed, -speed) # vasemman ja oikean nopeudet, kääntyy vasemmalle
+        i += 1
+
+    counter_max += counter_max
+        
