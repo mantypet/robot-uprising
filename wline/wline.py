@@ -15,6 +15,8 @@ from ev3dev2.sound import Sound
 # taustavari
 ridColor = 40
 
+# Nopeus
+speed = 25
 
 button = Button()
 colorS = ColorSensor(INPUT_3)
@@ -31,9 +33,14 @@ sound.beep()
 while True:
     intensity = colorS.reflected_light_intensity
 
-    if (intensity > ridColor):  # viivalla
+    while (intensity > ridColor):  # viivalla
         tank_pair.on(50, 50)  # vasemman ja oikean nopeudet, ajaa eteenpäin
-
-    else:
-        tank_pair.on_for_seconds(-25, 25, 2, brake = True, block = False) # vasemman ja oikean nopeudet, kääntyy vasemmalle
-        tank_pair.on_for_seconds(25, -25, 2, brake = True, block = False)  # vasemman ja oikean nopeudet, kääntyy oikealle
+    
+    if (intensity <= ridColor):
+        speed = -speed
+        i = 0
+        
+    while (intensity <= ridColor and i < 5):
+        tank_pair.on(speed, -speed) # vasemman ja oikean nopeudet, kääntyy vasemmalle
+        i += 1
+        
