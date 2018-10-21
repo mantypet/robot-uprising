@@ -45,7 +45,7 @@ while True:
     if (intensity <= ridColor): #Ei viivalla -> alusta viivanhakumuuttujat
         speed = -speed
         
-
+    i = 0
     while (intensity <= ridColor and i < counter_max): # Ei viivalla -> 
         intensity = colorS.reflected_light_intensity
         tank_pair.on(speed, -speed) # vasemman ja oikean nopeudet, kääntyy vasemmalle
