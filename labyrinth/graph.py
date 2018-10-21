@@ -2,6 +2,7 @@
 
 class Graph:
     def __init__(self):
+        # graph of challenge 1 labyrinth
         self.graph = {
             0: [6],
             1: [2, 7],

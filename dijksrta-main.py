@@ -22,47 +22,42 @@ from tank.custom_tank import CustomMoveTank
 
 def drive(currow, curcol, prevrow, prevcol, index):
     global heading
-    if prevrow - currow < 0:  # want to move south
-        if heading == 3:  # west
-            tank.turn(-90)  # kaanna 90 astetta vasemmalle
-            heading = (heading - 1) % 4
-        elif heading == 1:  # east
-            tank.turn(90)  # kaanna 90 astetta oikealle
-            heading = (heading + 1) % 4
-        # liiku eteenpain
-        tank.move_cm(30)
+    if prevrow - currow < 0:    # want to move south
+        if heading == 3:        # west
+            tank.turn(-90)      # turn 90 degrees left
+            heading = (heading - 1) % 4 # update heading
+        elif heading == 1:      # east
+            tank.turn(90)       # turn 90 degrees right
+            heading = (heading + 1) % 4 # update heading
+        tank.move_cm(30)        # move forward
     elif prevrow - currow > 0:  # want to move north
-        if heading == 3:  # west
-            tank.turn(90)  # kaanna 90 astetta oikealle
-            heading = (heading + 1) % 4
-        elif heading == 1:  # east
-            tank.turn(-90)  # kaanna 90 astetta vasemmalle
-            heading = (heading - 1) % 4
-        # liiku eteenpain
-        tank.move_cm(30)
+        if heading == 3:        # west
+            tank.turn(90)       # turn 90 degrees right
+            heading = (heading + 1) % 4 # update heading
+        elif heading == 1:      # east
+            tank.turn(-90)      # turn 90 degrees left
+            heading = (heading - 1) % 4 # update heading
+        tank.move_cm(30)        # move forward
     elif prevcol - curcol < 0:  # want to move west
-        if heading == 0:  # north
-            tank.turn(-90)  # kaanna 90 astetta vasemmalle
-            heading = (heading - 1) % 4
-        elif heading == 2:  # south
-            tank.turn(90)  # kaanna oikealle
-            heading = (heading + 1) % 4
-        # liiku eteenpain
-        tank.move_cm(30)
-    elif prevcol - curcol > 0:  # right / east
-        if heading == 0:  # north
-            tank.turn(90)  # kaanna 90 astetta oikealle
-            heading = (heading + 1) % 4
-        elif heading == 2:  # south
-            tank.turn(90)  # kaanna vasemmalle
-            heading = (heading - 1) % 4
-        # liiku eteenpain
-        tank.move_cm(30)
+        if heading == 0:        # north
+            tank.turn(-90)      # turn 90 degrees left
+            heading = (heading - 1) % 4 # update heading
+        elif heading == 2:      # south
+            tank.turn(90)       # turn 90 degrees right
+            heading = (heading + 1) % 4 # update heading
+        tank.move_cm(30)        # move forward
+    elif prevcol - curcol > 0:  # want to move east
+        if heading == 0:        # north
+            tank.turn(90)       # turn 90 degrees right
+            heading = (heading + 1) % 4 # update heading
+        elif heading == 2:      # south
+            tank.turn(90)       # turn 90 degrees left
+            heading = (heading - 1) % 4 # update heading
+        tank.move_cm(30)        # move forward
 
-
-start = 34
-goal = 21
-dij = Dijkstra(start, goal)
+start = 34  # set start node
+goal = 21   # set goal node
+dij = Dijkstra(start, goal) # count shortest path
 coordinates = dij.dij()
 prevrow = coordinates[0][0]
 prevcol = coordinates[0][1]
@@ -72,8 +67,10 @@ curcol = coordinates[1][0]
 
 tank = CustomMoveTank(OUTPUT_B, OUTPUT_C)
 
-heading = 1  # 0 = north, 1 = east, 2 = south, 3 = west
+heading = 0  # 0 = north, 1 = east, 2 = south, 3 = west
 index = 2
+
+# code above is working
 
 while 6*currow+curcol != goal:
     drive(currow, curcol, prevrow, prevcol, index)
