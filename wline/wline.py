@@ -13,12 +13,13 @@ from ev3dev2.sound import Sound
 # valkoinen mitattu 70, harmaa mitattu 12, keskiarvo ^40
 
 # taustavari
-ridColor = 20 # maalarinteippi
-#ridColor = 40 # valkoinen paperi
+#ridColor = 20 # maalarinteippi
+ridColor = 40 # valkoinen paperi
 
 
 # Nopeus
 speed = 25
+counter_max = 5
 
 button = Button()
 colorS = ColorSensor(INPUT_3)
@@ -45,7 +46,6 @@ while True:
     if (intensity <= ridColor): #Ei viivalla -> alusta viivanhakumuuttujat
         speed = -speed
     
-    counter_max = 0
     i = 0
     while (intensity <= ridColor and i < counter_max): # Ei viivalla -> 
         intensity = colorS.reflected_light_intensity
