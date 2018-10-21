@@ -1,3 +1,6 @@
+# Sensor debugging utility that assumes all sensors to be attached.
+# Can be used to read values in certain environments.
+
 from ev3dev2.button import Button
 
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
@@ -17,7 +20,6 @@ class Debugger:
 
     def run(self):
         button = Button()
-        screen = Display()
 
        #ultra = UltrasonicSensor(self.in1)
         infra = InfraredSensor(self.in2)

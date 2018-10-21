@@ -1,4 +1,3 @@
-# 'RED', 'GREEN', 'YELLOW', 'ORANGE, 'AMBER', 'BLACK'
 class LedColor:
     RED = "RED"
     GREEN = "GREEN"

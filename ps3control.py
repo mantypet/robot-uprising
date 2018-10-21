@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-__author__ = 'Anton Vanhoucke'
+__author__ = 'Anton Vanhoucke'zzz
 
 # This is a linux-specific module.
 # It is required by the Button class, but failure to import it may be
@@ -66,6 +66,7 @@ class MotorThread(threading.Thread):
                 self.tank.off()
 
         self.tank.off()
+
 
 class ClawThread(threading.Thread):
     def __init__(self):

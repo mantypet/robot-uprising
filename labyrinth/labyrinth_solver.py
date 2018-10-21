@@ -1,3 +1,5 @@
+# Dijkstra algorithm
+
 from labyrinth.graph import *
 import math
 import operator
@@ -46,7 +48,6 @@ class Dijkstra:
             self.s.append(shortest)
             for neigh in self.map.getvalue(shortest):
                 self.relax(shortest, neigh)
-        #return self.shortest_path(self.goal)
         return self.backto2d(self.shortest_path(self.goal))
 
     def backto2d(self, items):
@@ -60,8 +61,6 @@ class Dijkstra:
             u = items.pop()
             row = math.floor(u/6)
             col = u % 6
-            print("row: " + str(row))
-            print("rcol: " + str(col))
             templist = []
             templist.append(row)
             templist.append(col)
@@ -80,9 +79,4 @@ class Dijkstra:
         items.append(self.start)
 
         return items
-        '''
-        while len(items) != 0:
-            u = items.pop()
-            print(u)
-        '''
             
