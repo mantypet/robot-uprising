@@ -35,5 +35,5 @@ while True:
         tank_pair.on(50, 50)  # vasemman ja oikean nopeudet, ajaa eteenpäin
 
     else:
-        tank_pair.on_for_seconds(-25, 25, 2, brake=True, block=True) # vasemman ja oikean nopeudet, kääntyy vasemmalle
-        tank_pair.on_for_seconds(25, -25, 2, brake = True, block = True)  # vasemman ja oikean nopeudet, kääntyy oikealle
+        tank_pair.on_for_seconds(-25, 25, 2, brake = True, block = False) # vasemman ja oikean nopeudet, kääntyy vasemmalle
+        tank_pair.on_for_seconds(25, -25, 2, brake = True, block = False)  # vasemman ja oikean nopeudet, kääntyy oikealle
